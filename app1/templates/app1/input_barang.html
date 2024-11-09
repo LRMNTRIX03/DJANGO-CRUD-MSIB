@@ -1,0 +1,33 @@
+{% extends 'app1/base.html' %}
+{% load static %}
+{% block navbar %}
+    {% include 'app1/snippets/navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+<form action="{% url 'app1:inputbarang' %}" method="post" class="mt-5 p-3 w-50">
+    {% csrf_token %}
+    {% for x in form %}
+        <div class="mb-3">
+            <label for="{{ x.id_for_label }}" class="form-label">{{ x.label }}</label>
+            {{ x.as_widget }}
+            {% if x.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ x.errors }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Simpan</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'app1/base.html' %}
+{% load static %}
+{% block navbar %}
+    {% include 'app1/snippets/navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+
+<div class="container-fluid p-4">
+    <h2>{{ title }}</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama Barang</th>
+                <th scope="col">Harga</th>
+                <th scope="col">Stok</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in barang %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th> <!-- Number each row -->
+                    <td>{{ item.nama_barang }}</td>
+                    <td>{{ item.harga }}</td>
+                    <td>{{ item.stok }}</td>
+                    <td>{{ item.keterangan }}</td>
+                    <td>
+                        <span>
+                        <a href="{% url 'app1:editbarang' item.id %}" class="btn btn-primary">Edit</a>
+                        <form action="{% url 'app1:deletebarang' item.id %}" method="POST">{% csrf_token %}<button type="submit" class="btn btn-danger">Delete</button">
+                        </form>
+                    </span></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No items available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
